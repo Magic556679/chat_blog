@@ -11,7 +11,7 @@ module.exports = {
   // jsx 不使用單引號，而使用雙引號
   jsxSingleQuote: false,
   // 末尾使用逗號
-  trailingComma: 'all',
+  trailingComma: 'none',
   // 大括號內的首尾需要空格 { foo: bar }
   bracketSpacing: true,
   // jsx 標籤的反尖括號需要換行

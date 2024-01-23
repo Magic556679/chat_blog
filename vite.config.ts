@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import eslintPlugin from 'vite-plugin-eslint'
@@ -11,13 +11,13 @@ export default defineConfig({
     eslintPlugin({
       cache: false,
       include: ['./src/**/*.ts', './src/**/*.tsx'],
-      exclude: [],
-    }),
+      exclude: []
+    })
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+      '@': path.resolve(__dirname, './src')
+    }
   },
   server: {
     host: '0.0.0.0',
@@ -25,10 +25,10 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: loadEnv('', process.cwd()).VITE_SERVER_BASE_API,
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
-  },
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
+  }
 })

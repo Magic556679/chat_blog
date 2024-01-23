@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_BASE_API,
+  baseURL: import.meta.env.DEV ? '/api' : import.meta.env.VITE_SERVER_BASE_API,
   headers: {
-    accept: 'application/json',
+    accept: 'application/json'
   },
-  timeout: 30000,
+  timeout: 30000
 })
 
 service.interceptors.request.use(
@@ -14,7 +14,7 @@ service.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error)
-  },
+  }
 )
 
 service.interceptors.response.use(
@@ -23,7 +23,7 @@ service.interceptors.response.use(
   },
   (error) => {
     return Promise.reject(error)
-  },
+  }
 )
 
 export default service
