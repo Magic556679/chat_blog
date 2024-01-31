@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: import.meta.env.DEV ? '/api' : import.meta.env.VITE_SERVER_BASE_API,
+  // baseURL: import.meta.env.DEV ? '/api' : import.meta.env.VITE_SERVER_BASE_API,
+  baseURL: import.meta.env.VITE_SERVER_BASE_API,
   headers: {
     accept: 'application/json'
   },

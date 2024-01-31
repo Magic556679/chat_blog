@@ -5,7 +5,7 @@ interface SearchContent {
 }
 export function fetchAllPosts(data: SearchContent) {
   return service({
-    url: '/post',
+    url: '/posts',
     method: 'get',
     params: data
   })
