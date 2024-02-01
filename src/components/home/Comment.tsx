@@ -12,11 +12,11 @@ interface CommentProps {
   data: CommentItem[]
 }
 
-const formatData = (date: string) => {
-  return date.split('T')[0]
-}
-
 const Comment = ({ data }: CommentProps) => {
+  const formatData = (date: string) => {
+    return date.split('T')[0]
+  }
+
   return (
     <>
       <div>

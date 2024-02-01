@@ -78,7 +78,7 @@ const Home = () => {
                     style={{ backgroundImage: `url(${item.image})` }}
                   ></div>
                 </div>
-                <Likes likeTotal={item.likes} />
+                <Likes likeItem={item.likes} postId={item._id} />
                 <Comment data={item.comments} />
               </div>
             ))}
