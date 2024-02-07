@@ -3,10 +3,12 @@ import { useAppSelector } from '@/store/hooks'
 interface LikeProps {
   likeItem: string[]
   postId: string
+  handleGetPostData: () => void
 }
 
-const Likes = ({ likeItem, postId }: LikeProps) => {
+const Likes = ({ likeItem, postId, handleGetPostData }: LikeProps) => {
   const user = useAppSelector((state) => state.user)
+
   const isLiked = () => {
     return likeItem.includes(user.userId)
   }
@@ -25,7 +27,7 @@ const Likes = ({ likeItem, postId }: LikeProps) => {
         postId: postId
       }
       await ApiAddLike(data)
-      // update get All Posts
+      handleGetPostData()
     } catch (err) {
       console.error(err)
     }
@@ -37,6 +39,7 @@ const Likes = ({ likeItem, postId }: LikeProps) => {
         postId: postId
       }
       await ApiUnLike(data)
+      handleGetPostData()
     } catch (err) {
       console.error(err)
     }
@@ -45,7 +48,11 @@ const Likes = ({ likeItem, postId }: LikeProps) => {
   return (
     <div className="text-left">
       <button onClick={toggleLike}>
-        <i className="fa-regular fa-heart cursor-pointer mt-5 mr-2"></i>
+        <i
+          className={`fa-regular fa-heart cursor-pointer mt-5 mr-2 ${
+            isLiked() ? 'text-red-500' : ''
+          }`}
+        ></i>
       </button>
       {likeItem.length}
       <span className="text-sm">個讚</span>
