@@ -11,6 +11,15 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
+    const getCookieTokenName: string | undefined = document.cookie
+      .split('; ')
+      .find((item) => item.includes('id_token='))
+    const token: string | undefined = getCookieTokenName?.split('=')[1]
+
+    if (config && config.headers) {
+      config.headers['Authorization'] = `Bearer ${token}`
+      return config
+    }
     return config
   },
   (error) => {
