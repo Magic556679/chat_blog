@@ -85,7 +85,8 @@ const Home = () => {
           </article>
         </div>
       </div>
-    </>
+      <Modal />
+    </div>
   )
 }
 
