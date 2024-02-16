@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setUserInfo } from '@/store/user'
+import { setToggle } from '@/store/modal'
 import { login as loginApi } from '@/services/user'
 import { AxiosError } from 'axios'
 
@@ -34,6 +35,7 @@ const Login = () => {
       document.cookie = `id_token= ${data.token}`
       dispatch(setUserInfo(data))
       navigate('/')
+      dispatch(setToggle())
     } catch (err) {
       if (err instanceof AxiosError) {
         setError('email', {
@@ -57,7 +59,7 @@ const Login = () => {
             required: { value: true, message: '此欄位必填寫' },
             pattern: {
               value: /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/g,
-              message: '不符合 Email 規則'
+              message: '請輸入Email格式'
             }
           })}
         />

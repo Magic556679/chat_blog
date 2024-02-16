@@ -1,5 +1,9 @@
 import { ApiAddLike, ApiUnLike } from '@/services/post'
 import { useAppSelector } from '@/store/hooks'
+import { useDispatch } from 'react-redux'
+import { setToggle } from '@/store/modal'
+import { isAuth } from '@/helpers/index'
+
 interface LikeProps {
   likeItem: string[]
   postId: string
@@ -8,6 +12,7 @@ interface LikeProps {
 
 const Likes = ({ likeItem, postId, handleGetPostData }: LikeProps) => {
   const user = useAppSelector((state) => state.user)
+  const dispatch = useDispatch()
 
   const isLiked = () => {
     return likeItem.includes(user.userId)
@@ -23,25 +28,23 @@ const Likes = ({ likeItem, postId, handleGetPostData }: LikeProps) => {
 
   const addLike = async () => {
     try {
-      const data = {
-        postId: postId
-      }
+      const data = { postId }
       await ApiAddLike(data)
       handleGetPostData()
     } catch (err) {
-      console.error(err)
+      isAuth(err as Error)
+      dispatch(setToggle())
     }
   }
 
   const unLike = async () => {
     try {
-      const data = {
-        postId: postId
-      }
+      const data = { postId }
       await ApiUnLike(data)
       handleGetPostData()
     } catch (err) {
-      console.error(err)
+      isAuth(err as Error)
+      dispatch(setToggle())
     }
   }
 

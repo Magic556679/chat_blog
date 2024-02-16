@@ -19,10 +19,12 @@ export const user = createSlice({
     setUserInfo: (state, action: PayloadAction<UserInfo>) => {
       state.userName = action.payload.name
       state.userId = action.payload.id
-    }
+      state.userLoggedIn = true
+    },
+    logout: () => {}
   }
 })
 
-export const { setUserInfo } = user.actions
+export const { setUserInfo, logout } = user.actions
 export const userInfo = (state: RootState) => state.user
 export default user.reducer
