@@ -1,19 +1,110 @@
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { register as registerApi } from '@/services/user'
+import { AxiosError } from 'axios'
+
+type Inputs = {
+  name: string
+  email: string
+  password: string
+}
+
 const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors }
+  } = useForm<Inputs>()
+
+  const handlerRegister = async (formData: Inputs) => {
+    try {
+      await registerApi(formData)
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        setError('password', {
+          type: 'manual',
+          message: err.response?.data.message
+        })
+      }
+      console.error(err)
+    }
+  }
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    handlerRegister(data)
+  }
+
   return (
-    <>
-      <h3>註冊</h3>
-      <div className="w-72">
-        <div className="relative w-full min-w-[200px] h-10">
-          <input
-            className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
-            placeholder=" "
-          />
-          <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-gray-500 peer-focus:text-gray-900 before:border-blue-gray-200 peer-focus:before:!border-gray-900 after:border-blue-gray-200 peer-focus:after:!border-gray-900">
-            Username
-          </label>
-        </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+      <div className="mx-10 mb-6 relative">
+        <input
+          type="text"
+          className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="暱稱"
+          autoComplete="name"
+          {...register('name', {
+            required: { value: true, message: '此欄位必填寫' }
+          })}
+        />
+        {errors.name?.type === 'required' && (
+          <p className="text-red-500 absolute text-xs">{errors.name.message}</p>
+        )}
       </div>
-    </>
+      <div className="mx-10 mb-6 relative">
+        <input
+          type="email"
+          className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="電子信箱"
+          autoComplete="email"
+          {...register('email', {
+            required: { value: true, message: '此欄位必填寫' },
+            pattern: {
+              value: /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/g,
+              message: '請輸入Email格式'
+            }
+          })}
+        />
+        {errors.email?.type === 'required' && (
+          <p className="text-red-500 absolute text-xs">
+            {errors.email.message}
+          </p>
+        )}
+        {errors.email?.type === 'pattern' && (
+          <p className="text-red-500 absolute text-xs">
+            {errors.email.message}
+          </p>
+        )}
+      </div>
+      <div className="mx-10 mb-6 relative">
+        <input
+          type="password"
+          className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="密碼"
+          autoComplete="current-password"
+          {...register('password', {
+            required: { value: true, message: '此欄位必填寫' }
+          })}
+        />
+        {errors.password?.type === 'required' && (
+          <p className="text-red-500 absolute text-xs">
+            {errors.password.message}
+          </p>
+        )}
+        {errors.password?.type === 'manual' && (
+          <p className="text-red-500 absolute text-xs">
+            {errors.password.message}
+          </p>
+        )}
+      </div>
+
+      <div className="mx-10 mb-1">
+        <input
+          type="submit"
+          className="w-full text-white bg-[#0077C5] rounded-lg px-1  py-1 cursor-pointer"
+          value="註冊"
+        ></input>
+      </div>
+    </form>
   )
 }
 

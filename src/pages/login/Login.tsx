@@ -22,10 +22,6 @@ const Login = () => {
     formState: { errors }
   } = useForm<Inputs>()
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    handleLogin(data)
-  }
-
   const handleLogin = async (formData: Inputs) => {
     try {
       const {
@@ -38,13 +34,17 @@ const Login = () => {
       dispatch(setToggle())
     } catch (err) {
       if (err instanceof AxiosError) {
-        setError('email', {
+        setError('password', {
           type: 'manual',
           message: err.response?.data.message
         })
         console.error(err)
       }
     }
+  }
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    handleLogin(data)
   }
 
   return (
@@ -89,9 +89,9 @@ const Login = () => {
             {errors.password.message}
           </p>
         )}
-        {errors.email?.type === 'manual' && (
+        {errors.password?.type === 'manual' && (
           <p className="text-red-500 absolute text-xs">
-            {errors.email.message}
+            {errors.password.message}
           </p>
         )}
       </div>
