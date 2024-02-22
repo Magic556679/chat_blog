@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useCheckLogin } from '@/hook/hooks'
 import { useDispatch } from 'react-redux'
-import { setToggle } from '@/store/modal'
+import { setToggle, setModelType } from '@/store/modal'
 import { logout } from '@/store/user'
 
 const SideBar = () => {
@@ -9,8 +9,9 @@ const SideBar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const openLoginModal = () => {
+  const openLoginModal = (type: string) => {
     dispatch(setToggle())
+    dispatch(setModelType(type))
   }
 
   const enterHomePage = () => {
@@ -42,12 +43,19 @@ const SideBar = () => {
   ) : (
     <div className="w-[200px] px-3 pt-2 flex flex-col items-center border-r border-gray-300 border-solid">
       <div
-        onClick={openLoginModal}
+        onClick={() => {
+          openLoginModal('login')
+        }}
         className="w-[35%] py-1 px-1 rounded-lg text-white bg-[#0077C5] shadow-3xl text-center cursor-pointer"
       >
         登入
       </div>
-      <div className="w-[35%] mt-2 py-1 px-1  rounded-lg text-white bg-[#0077C5] shadow-3xl text-center cursor-pointer">
+      <div
+        onClick={() => {
+          openLoginModal('register')
+        }}
+        className="w-[35%] mt-2 py-1 px-1  rounded-lg text-white bg-[#0077C5] shadow-3xl text-center cursor-pointer"
+      >
         註冊
       </div>
     </div>

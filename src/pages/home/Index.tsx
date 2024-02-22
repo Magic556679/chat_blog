@@ -1,11 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useAppSelector } from '@/store/hooks'
 import { fetchAllPosts } from '@/services/post'
 import SideBar from '@/pages/home/SideBar'
 import Likes from '@/components/home/Likes'
 import Comment from '@/components/home/Comment'
 import Modal from '@/components/common/Modal'
+import Login from '@/pages/login/Login'
+import Register from '@/pages/login/Register'
 
 const Home = () => {
+  const modal = useAppSelector((state) => state.modal)
   const [search] = useState('')
   const [posts, setPosts] = useState([] as Array<PostType>)
   const [forceUpdate, setForceUpdate] = useState(false)
@@ -97,7 +101,10 @@ const Home = () => {
           </article>
         </div>
       </div>
-      <Modal />
+      <Modal>
+        {modal.modelType === 'login' && <Login />}
+        {modal.modelType === 'register' && <Register />}
+      </Modal>
     </div>
   )
 }

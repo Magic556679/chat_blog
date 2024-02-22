@@ -3,10 +3,10 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 const LoginIndex = () => {
   const navigate = useNavigate()
-  const route = useLocation()
+  const location = useLocation()
 
   const nextPath = () => {
-    const path = route.pathname === '/login' ? '/register' : '/login'
+    const path = location.pathname === '/login' ? '/register' : '/login'
     navigate(path)
   }
 
@@ -20,7 +20,7 @@ const LoginIndex = () => {
         onClick={nextPath}
         className="border border-black-600 border-solid text-center w-[350px] mx-auto mt-3 py-3 cursor-pointer"
       >
-        {route.pathname === '/login' ? '註冊' : '登入'}
+        {location.pathname === '/login' ? '註冊' : '登入'}
       </div>
     </>
   )

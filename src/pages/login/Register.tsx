@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { register as registerApi } from '@/services/user'
 import { AxiosError } from 'axios'
@@ -9,6 +10,7 @@ type Inputs = {
 }
 
 const Register = () => {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -19,6 +21,7 @@ const Register = () => {
   const handlerRegister = async (formData: Inputs) => {
     try {
       await registerApi(formData)
+      navigate('/login')
     } catch (err) {
       if (err instanceof AxiosError) {
         setError('password', {

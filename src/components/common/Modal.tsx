@@ -1,9 +1,13 @@
+import { ReactNode } from 'react'
 import { useAppSelector } from '@/store/hooks'
 import { useDispatch } from 'react-redux'
 import { setToggle } from '@/store/modal'
-import Login from '@/pages/login/Login'
 
-const Model = () => {
+interface ModelProps {
+  children: ReactNode
+}
+
+const Model = ({ children }: ModelProps) => {
   const dispatch = useDispatch()
   const handleCloseModal = () => {
     dispatch(setToggle())
@@ -22,7 +26,7 @@ const Model = () => {
             <i className="fa fa-times"></i>
           </span>
           <h1 className="text-4xl mt-9 mb-3 flex justify-center">Chat Blog</h1>
-          <Login />
+          {children}
         </div>
       )}
     </div>
