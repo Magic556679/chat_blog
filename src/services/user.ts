@@ -24,3 +24,15 @@ export function register(data: registerData) {
     data
   })
 }
+
+interface UserId {
+  id: string
+}
+
+export function profile({ id }: UserId) {
+  return service({
+    url: 'users/profile',
+    method: 'get',
+    params: { id }
+  })
+}

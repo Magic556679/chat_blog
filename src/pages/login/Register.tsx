@@ -1,7 +1,9 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { register as registerApi } from '@/services/user'
 import { AxiosError } from 'axios'
+import { setToggle } from '@/store/modal'
 
 type Inputs = {
   name: string
@@ -11,6 +13,9 @@ type Inputs = {
 
 const Register = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const dispatch = useDispatch()
+
   const {
     register,
     handleSubmit,
@@ -21,7 +26,12 @@ const Register = () => {
   const handlerRegister = async (formData: Inputs) => {
     try {
       await registerApi(formData)
-      navigate('/login')
+      if (location.pathname === '/register') {
+        navigate('/login')
+      }
+      if (location.pathname === '/') {
+        dispatch(setToggle())
+      }
     } catch (err) {
       if (err instanceof AxiosError) {
         setError('password', {

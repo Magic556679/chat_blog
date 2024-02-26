@@ -1,10 +1,12 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setUserInfo } from '@/store/user'
 import { setToggle } from '@/store/modal'
 import { login as loginApi } from '@/services/user'
 import { AxiosError } from 'axios'
+import { fetchPosts } from '@/store/user'
+import type { AppDispatch } from '@/store/store'
 
 type Inputs = {
   email: string
@@ -13,7 +15,8 @@ type Inputs = {
 
 const Login = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
+  const location = useLocation()
 
   const {
     register,
@@ -31,7 +34,10 @@ const Login = () => {
       document.cookie = `id_token= ${data.token}`
       dispatch(setUserInfo(data))
       navigate('/')
-      dispatch(setToggle())
+      dispatch(fetchPosts())
+      if (location.pathname === '/') {
+        dispatch(setToggle())
+      }
     } catch (err) {
       if (err instanceof AxiosError) {
         setError('password', {
