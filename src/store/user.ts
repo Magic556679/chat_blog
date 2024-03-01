@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '@/store/store'
-import { profile } from '@/services/user'
+import { api } from '@/services/useUser'
 
 interface UserInfo {
   name: string
@@ -23,39 +23,18 @@ export const user = createSlice({
       state.userProfilePhoto = ''
       state.userLoggedIn = true
     },
-    setProfile: (
-      state,
-      action: PayloadAction<{ userProfilePhoto: string; userGender: string }>
-    ) => {
-      state.userProfilePhoto = action.payload.userProfilePhoto
-    },
     logout: () => {}
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchPosts.fulfilled, (state, action) => {
-      state.userProfilePhoto = action.payload.photo
-    })
+    builder.addMatcher(
+      api.endpoints.profile.matchFulfilled,
+      (state, { payload }) => {
+        state.userProfilePhoto = payload.data.photo
+      }
+    )
   }
 })
 
-export const { setUserInfo, logout, setProfile } = user.actions
+export const { setUserInfo, logout } = user.actions
 export const userInfo = (state: RootState) => state.user
 export default user.reducer
-
-interface Profile {
-  photo: string
-}
-export const fetchPosts = createAsyncThunk<Profile, void, { state: RootState }>(
-  'user/getProfile',
-  async (_, { getState }) => {
-    try {
-      const userId = getState().user.userId
-      const {
-        data: { data }
-      } = await profile({ id: userId })
-      return data
-    } catch (err) {
-      console.error(err)
-    }
-  }
-)

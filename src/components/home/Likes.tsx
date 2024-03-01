@@ -1,7 +1,7 @@
 import { ApiAddLike, ApiUnLike } from '@/services/post'
 import { useAppSelector } from '@/store/hooks'
 import { useDispatch } from 'react-redux'
-import { setToggle } from '@/store/modal'
+import { setToggle, setModelType } from '@/store/modal'
 import { isAuth } from '@/helpers/index'
 
 interface LikeProps {
@@ -34,6 +34,7 @@ const Likes = ({ likeItem, postId, handleGetPostData }: LikeProps) => {
     } catch (err) {
       isAuth(err as Error)
       dispatch(setToggle())
+      dispatch(setModelType('login'))
     }
   }
 
@@ -45,6 +46,7 @@ const Likes = ({ likeItem, postId, handleGetPostData }: LikeProps) => {
     } catch (err) {
       isAuth(err as Error)
       dispatch(setToggle())
+      dispatch(setModelType('login'))
     }
   }
 

@@ -5,7 +5,7 @@ import { setUserInfo } from '@/store/user'
 import { setToggle } from '@/store/modal'
 import { login as loginApi } from '@/services/user'
 import { AxiosError } from 'axios'
-import { fetchPosts } from '@/store/user'
+import { useProfileMutation } from '@/services/useUser'
 import type { AppDispatch } from '@/store/store'
 
 type Inputs = {
@@ -17,6 +17,7 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const location = useLocation()
+  const [profile] = useProfileMutation()
 
   const {
     register,
@@ -34,7 +35,7 @@ const Login = () => {
       document.cookie = `id_token= ${data.token}`
       dispatch(setUserInfo(data))
       navigate('/')
-      dispatch(fetchPosts())
+      await profile({ id: data.id }).unwrap()
       if (location.pathname === '/') {
         dispatch(setToggle())
       }
