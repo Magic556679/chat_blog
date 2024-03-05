@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCheckLogin } from '@/hook/hooks'
 import { useDispatch } from 'react-redux'
 import { setToggle, setModelType } from '@/store/modal'
-import { logout } from '@/store/user'
+import { reset } from '@/store/userSlice'
 
 const SideBar = () => {
   const checkLogin = useCheckLogin()
@@ -19,7 +19,7 @@ const SideBar = () => {
   }
 
   const signOut = () => {
-    dispatch(logout())
+    dispatch(reset())
     document.cookie = 'id_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     document.cookie =
       'id_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'

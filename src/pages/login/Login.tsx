@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { setUserInfo } from '@/store/user'
+import { setUserInfo } from '@/store/userSlice'
 import { setToggle } from '@/store/modal'
 import { login as loginApi } from '@/services/user'
 import { AxiosError } from 'axios'

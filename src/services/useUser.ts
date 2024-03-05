@@ -15,7 +15,7 @@ export interface LoginRequest {
   id: string
 }
 
-export const api = createApi({
+export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_SERVER_BASE_API,
     prepareHeaders: (headers) => {
@@ -40,4 +40,4 @@ export const api = createApi({
   })
 })
 
-export const { useProfileMutation } = api
+export const { useProfileMutation } = userApi

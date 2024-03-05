@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '@/store/store'
-import { api } from '@/services/useUser'
+import { userApi } from '@/services/useUser'
 
 interface UserInfo {
   name: string
@@ -23,11 +23,18 @@ export const user = createSlice({
       state.userProfilePhoto = ''
       state.userLoggedIn = true
     },
-    logout: () => {}
+    logout: () => {},
+    reset: (state) => {
+      state.userName = ''
+      state.userId = ''
+      state.userProfilePhoto = ''
+      state.userGender = ''
+      state.userLoggedIn = false
+    }
   },
   extraReducers: (builder) => {
     builder.addMatcher(
-      api.endpoints.profile.matchFulfilled,
+      userApi.endpoints.profile.matchFulfilled,
       (state, { payload }) => {
         state.userProfilePhoto = payload.data.photo
       }
@@ -35,6 +42,6 @@ export const user = createSlice({
   }
 })
 
-export const { setUserInfo, logout } = user.actions
+export const { setUserInfo, logout, reset } = user.actions
 export const userInfo = (state: RootState) => state.user
 export default user.reducer
